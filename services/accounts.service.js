@@ -19,3 +19,16 @@ export const loadAccountsFromDB = () => {
 export const saveAccountsToDB = (accounts) => {
   fs.writeFileSync(accountsDBpath, JSON.stringify(accounts));
 };
+
+export const attachNewAccountToUser = (newUser) => {
+  const accounts = loadAccountsFromDB();
+  accounts[newUser.id] = {
+    [newUser.accounts[0]]: {
+      userID: newUser.id,
+      accountNumber: newUser.accounts[0],
+      cash: 0,
+      credit: 0
+    }
+  };
+  saveAccountsToDB(accounts);
+};
