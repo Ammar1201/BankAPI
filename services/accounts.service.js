@@ -36,4 +36,5 @@ export const attachNewAccountToUser = (userID) => {
   };
   attachAccountNumberToUser(userID, accountNumber);
   saveAccountsToDB(accounts);
+  return accounts[userID][accountNumber];
 };

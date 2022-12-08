@@ -24,4 +24,5 @@ export const attachAccountNumberToUser = (userID, accountNumber) => {
   const users = loadUsersFromDB();
   users[userID].accounts.push(accountNumber);
   saveUsersToDB(users);
+  return users[userID];
 };

@@ -12,9 +12,8 @@ export const addNewUser = (req, res) => {
   newUser.accounts = [];
   users[newUser.id] = newUser;
   saveUsersToDB(users);
-  attachNewAccountToUser(newUser.id);
-  const updatedUsers = loadUsersFromDB();
-  res.status(201).send(updatedUsers[newUser.id]);
+  const addedUser = attachNewAccountToUser(newUser.id);
+  res.status(201).send(addedUser);
 };
 
 export const getAllUsers = (req, res) => {

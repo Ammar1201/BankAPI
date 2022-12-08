@@ -22,7 +22,6 @@ export const addAccount = (req, res) => {
     res.status(404).send({ error: 404, message: 'User Not Found!' });
   }
 
-  attachNewAccountToUser(userID);
-  const updatedAccounts = loadAccountsFromDB();
-  res.status(201).send(updatedAccounts[userID]);
+  const newAccount = attachNewAccountToUser(userID);
+  res.status(201).send(newAccount);
 };
