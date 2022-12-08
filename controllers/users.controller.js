@@ -9,12 +9,12 @@ export const addNewUser = (req, res) => {
     res.status(409).send({ error: 409, message: 'User already exists!' });
   }
 
-  const randomAccountNumber = Math.floor(Math.random() * 999999 + 100000);
-  newUser.accounts = [randomAccountNumber];
+  newUser.accounts = [];
   users[newUser.id] = newUser;
-  attachNewAccountToUser(newUser);
   saveUsersToDB(users);
-  res.status(201).send(newUser);
+  attachNewAccountToUser(newUser.id);
+  const updatedUsers = loadUsersFromDB();
+  res.status(201).send(updatedUsers[newUser.id]);
 };
 
 export const getAllUsers = (req, res) => {

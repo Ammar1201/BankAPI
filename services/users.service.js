@@ -19,3 +19,9 @@ export const loadUsersFromDB = () => {
 export const saveUsersToDB = (users) => {
   fs.writeFileSync(usersDBpath, JSON.stringify(users));
 };
+
+export const attachAccountNumberToUser = (userID, accountNumber) => {
+  const users = loadUsersFromDB();
+  users[userID].accounts.push(accountNumber);
+  saveUsersToDB(users);
+};

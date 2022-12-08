@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import * as url from 'url';
+import { randomAccountNumber } from '../utils.js';
+import { attachAccountNumberToUser } from './users.service.js';
 
 // const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -20,15 +22,18 @@ export const saveAccountsToDB = (accounts) => {
   fs.writeFileSync(accountsDBpath, JSON.stringify(accounts));
 };
 
-export const attachNewAccountToUser = (newUser) => {
+export const attachNewAccountToUser = (userID) => {
+  const accountNumber = randomAccountNumber();
   const accounts = loadAccountsFromDB();
-  accounts[newUser.id] = {
-    [newUser.accounts[0]]: {
-      userID: newUser.id,
-      accountNumber: newUser.accounts[0],
+  accounts[userID] = {
+    ...accounts[userID],
+    [accountNumber]: {
+      userID: userID,
+      accountNumber: accountNumber,
       cash: 0,
       credit: 0
     }
   };
+  attachAccountNumberToUser(userID, accountNumber);
   saveAccountsToDB(accounts);
 };
