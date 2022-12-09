@@ -2,27 +2,14 @@ import uniqid from 'uniqid';
 import { loadTransfersFromDB, saveTransfersToDB } from "../services/transfers.service.js";
 import { loadAccountsFromDB, saveAccountsToDB } from "../services/accounts.service.js";
 import { loadUsersFromDB, saveUsersToDB } from "../services/users.service.js";
-
-const checkSenderUserAccountBalance = (account, amount) => {
-	if (account.cash - amount < 0) {
-		if (account.cash + account.credit - amount < 0) {
-			return false;
-		}
-
-		account.cash -= amount;
-		account.credit += account.cash;
-		account.cash = 0;
-		return true;
-	}
-	else {
-		account.cash -= amount;
-		return true;
-	}
-}
+import { checkSenderUserAccountBalance, checkReqBody } from '../utils.js';
 
 export const transferMoney = (req, res) => {
-	if (req.body === undefined || req.body === {}) {
-		res.status(400).send({ error: 400, message: 'Bad Request No Request Body Provided!' });
+	const reqBody = checkReqBody(req.body);
+	if (reqBody.status === 'bad request') {
+		console.log('bad request');
+		res.status(400).send(reqBody.error);
+		return;
 	}
 
 	const { senderUserID, senderUserAccountNumber, receiverUserID, receiverUserAccountNumber, amountToTransfer } = req.body;

@@ -1,11 +1,5 @@
 import { loadAccountsFromDB, saveAccountsToDB, attachNewAccountToUser } from "../services/accounts.service.js";
-
-//? /users/:userID/accounts → GET → all user accounts. - done.
-//! /users/:userID/accounts/deposit → PUT → req.body → {accountNumber, amountToDeposit} - done but not fully sure
-//! /users/:userID/accounts/withdraw → PUT → req.body → {accountNumber, amountToWithdraw} - done but not fully sure
-//! /users/:userID/accounts/updateCredit → PUT → req.body → {accountNumber, newCredit} - done but not fully sure
-//* /users/:userID/accounts → PUT → transfer.
-//? /users/:userID/accounts/new-account → POST → add new account to user. - done.
+import { checkSenderUserAccountBalance, checkReqBody } from "../utils.js";
 
 export const getUserAccounts = (req, res) => {
   const { userID } = req.params;
@@ -28,77 +22,116 @@ export const addAccount = (req, res) => {
 };
 
 export const depositToAccount = (req, res) => {
-  const info = req.body;
+  const reqBody = checkReqBody(req.body);
+  if (reqBody.status === 'bad request') {
+    console.log('bad request');
+    res.status(400).send(reqBody.error);
+    return;
+  }
+
+  const { accountNumber, amountToDeposit } = req.body;
+
+  if (accountNumber === undefined) {
+    res.status(404).send({ error: 404, message: 'You must provide the account number' });
+  }
+
+  if (amountToDeposit === undefined) {
+    res.status(404).send({ error: 404, message: 'You must provide the amount to deposit' });
+  }
+
   const { userID } = req.params;
   const accounts = loadAccountsFromDB();
   if (accounts[userID] === undefined) {
     res.status(404).send({ error: 404, message: 'User Not Found!' });
   }
 
-  if (accounts[userID][info.accountNumber] === undefined) {
+  if (accounts[userID][accountNumber] === undefined) {
     res.status(404).send({ error: 404, message: 'Account Not Found!' });
   }
 
-  if (info.amountToDeposit < 0) {
+  if (amountToDeposit < 0) {
     res.status(404).send({ error: 404, message: 'Cash must be a positive number!' });
   }
 
-  accounts[userID][info.accountNumber].cash += info.amountToDeposit;
+  accounts[userID][accountNumber].cash += amountToDeposit;
   saveAccountsToDB(accounts);
-  res.status(201).send(accounts[userID][info.accountNumber]);
+  res.status(201).send(accounts[userID][accountNumber]);
 };
 
 export const updateCredit = (req, res) => {
-  const info = req.body;
+  const reqBody = checkReqBody(req.body);
+  if (reqBody.status === 'bad request') {
+    console.log('bad request');
+    res.status(400).send(reqBody.error);
+    return;
+  }
+
+  const { accountNumber, newCredit } = req.body;
+
+  if (accountNumber === undefined) {
+    res.status(404).send({ error: 404, message: 'You must provide the account number' });
+  }
+
+  if (newCredit === undefined) {
+    res.status(404).send({ error: 404, message: 'You must provide the new credit amount' });
+  }
+
+
   const { userID } = req.params;
   const accounts = loadAccountsFromDB();
   if (accounts[userID] === undefined) {
     res.status(404).send({ error: 404, message: 'User Not Found!' });
   }
 
-  if (accounts[userID][info.accountNumber] === undefined) {
+  if (accounts[userID][accountNumber] === undefined) {
     res.status(404).send({ error: 404, message: 'Account Not Found!' });
   }
 
-  if (info.newCredit < 0) {
+  if (newCredit < 0) {
     res.status(404).send({ error: 404, message: 'Credit must be a positive number!' });
   }
 
-  accounts[userID][info.accountNumber].credit = info.newCredit;
+  accounts[userID][accountNumber].credit = newCredit;
   saveAccountsToDB(accounts);
-  res.status(201).send(accounts[userID][info.accountNumber]);
+  res.status(201).send(accounts[userID][accountNumber]);
 };
 
 export const withdrawFromAccount = (req, res) => {
-  const info = req.body;
+  const reqBody = checkReqBody(req.body);
+  if (reqBody.status === 'bad request') {
+    console.log('bad request');
+    res.status(400).send(reqBody.error);
+    return;
+  }
+
+  const { accountNumber, amountToWithdraw } = req.body;
+
+  if (accountNumber === undefined) {
+    res.status(404).send({ error: 404, message: 'You must provide the account number' });
+  }
+
+  if (amountToWithdraw === undefined) {
+    res.status(404).send({ error: 404, message: 'You must provide the amount to withdraw' });
+  }
+
   const { userID } = req.params;
   const accounts = loadAccountsFromDB();
   if (accounts[userID] === undefined) {
     res.status(404).send({ error: 404, message: 'User Not Found!' });
   }
 
-  if (accounts[userID][info.accountNumber] === undefined) {
+  if (accounts[userID][accountNumber] === undefined) {
     res.status(404).send({ error: 404, message: 'Account Not Found!' });
   }
 
-  if (info.newCredit < 0) {
+  if (amountToWithdraw < 0) {
     res.status(404).send({ error: 404, message: 'Credit must be a positive number!' });
   }
 
-  const account = accounts[userID][info.accountNumber];
-  if (account.cash - info.amountToWithdraw < 0) {
-    if (account.cash + account.credit - info.amountToWithdraw < 0) {
-      res.status(404).send({ error: 404, message: 'user doesn\'t have enough credit and cash to withdraw' });
-      return;
-    }
-
-    account.cash -= info.amountToWithdraw;
-    account.credit += account.cash;
-    account.cash = 0;
-  }
-  else {
-    account.cash -= info.amountToWithdraw;
+  const account = accounts[userID][accountNumber];
+  if (!checkSenderUserAccountBalance(account, amountToWithdraw)) {
+    res.status(404).send({ error: 404, message: 'user doesn\'t have enough credit and cash to withdraw' });
   }
   saveAccountsToDB(accounts);
-  res.status(201).send(accounts[userID][info.accountNumber]);
+  res.status(201).send(accounts[userID][accountNumber]);
 };
