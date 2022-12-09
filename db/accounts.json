@@ -1,1 +1,46 @@
-{"ccd0f457-73ac-41ec-9f07-8ae384aade47":{"305637":{"userID":"ccd0f457-73ac-41ec-9f07-8ae384aade47","accountNumber":305637,"cash":0,"credit":0},"532304":{"userID":"ccd0f457-73ac-41ec-9f07-8ae384aade47","accountNumber":532304,"cash":0,"credit":1000}},"46995559-1b60-40f5-8b60-7ccafb58e646":{"281903":{"userID":"46995559-1b60-40f5-8b60-7ccafb58e646","accountNumber":281903,"cash":0,"credit":0},"429167":{"userID":"46995559-1b60-40f5-8b60-7ccafb58e646","accountNumber":429167,"cash":0,"credit":0}},"f90848bc-6e75-497a-a5ed-3cfcad1ca1cc":{"339646":{"userID":"f90848bc-6e75-497a-a5ed-3cfcad1ca1cc","accountNumber":339646,"cash":0,"credit":0}},"00df5468-6420-4707-8f6e-b7d933835eb4":{"241508":{"userID":"00df5468-6420-4707-8f6e-b7d933835eb4","accountNumber":241508,"cash":0,"credit":0}}}
+{
+  "ccd0f457-73ac-41ec-9f07-8ae384aade47": {
+    "305637": {
+      "userID": "ccd0f457-73ac-41ec-9f07-8ae384aade47",
+      "accountNumber": 305637,
+      "cash": 0,
+      "credit": 0
+    },
+    "532304": {
+      "userID": "ccd0f457-73ac-41ec-9f07-8ae384aade47",
+      "accountNumber": 532304,
+      "cash": 0,
+      "credit": 1000
+    }
+  },
+  "46995559-1b60-40f5-8b60-7ccafb58e646": {
+    "281903": {
+      "userID": "46995559-1b60-40f5-8b60-7ccafb58e646",
+      "accountNumber": 281903,
+      "cash": 5000,
+      "credit": 0
+    },
+    "429167": {
+      "userID": "46995559-1b60-40f5-8b60-7ccafb58e646",
+      "accountNumber": 429167,
+      "cash": 0,
+      "credit": 0
+    }
+  },
+  "f90848bc-6e75-497a-a5ed-3cfcad1ca1cc": {
+    "339646": {
+      "userID": "f90848bc-6e75-497a-a5ed-3cfcad1ca1cc",
+      "accountNumber": 339646,
+      "cash": 0,
+      "credit": 0
+    }
+  },
+  "00df5468-6420-4707-8f6e-b7d933835eb4": {
+    "241508": {
+      "userID": "00df5468-6420-4707-8f6e-b7d933835eb4",
+      "accountNumber": 241508,
+      "cash": 0,
+      "credit": 0
+    }
+  }
+}
