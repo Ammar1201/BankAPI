@@ -7,4 +7,4 @@ export const indexRouter = Router();
 
 indexRouter.use('/users', userRouter);
 indexRouter.use('/users/:userID/accounts', accountsRouter);
-indexRouter.use('/transfer', transfersRouter);
+indexRouter.use('/transfers', transfersRouter);

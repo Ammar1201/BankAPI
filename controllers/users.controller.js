@@ -24,8 +24,12 @@ export const addNewUser = (req, res) => {
 
   newUser.accounts = [];
   users[newUser.id] = newUser;
+  users[newUser.id].transfersSent = [];
+  users[newUser.id].transfersReceived = [];
   saveUsersToDB(users);
-  const addedUser = attachNewAccountToUser(newUser.id);
+  const addedUserAccount = attachNewAccountToUser(newUser.id);
+  const addedUser = users[newUser.id];
+  addedUser.accounts.push(addedUserAccount.accountNumber);
   res.status(201).send(addedUser);
 };
 
