@@ -4,6 +4,56 @@ import { loadAccountsFromDB, saveAccountsToDB } from "../services/accounts.servi
 import { loadUsersFromDB, saveUsersToDB } from "../services/users.service.js";
 import { checkSenderUserAccountBalance, checkReqBody } from '../utils.js';
 
+//* -------------------------------------------validation functions------------------------------------------------------
+const validateAmountToTransfer = (amountToTransfer, res) => {
+	if (amountToTransfer === undefined) {
+		res.status(404).send({ errorStatus: 404, message: 'you have to provide the amountToTransfer!' });
+		return true;
+	}
+
+	if (amountToTransfer <= 0) {
+		res.status(404).send({ errorStatus: 404, message: 'amountToTransfer must be a positive number! greater than zero' });
+		return true;
+	}
+
+	if (amountToTransfer < 100) {
+		res.status(404).send({ errorStatus: 404, message: 'minimum amount to transfer should be 100!' });
+		return true;
+	}
+
+	return false;
+};
+
+const validateUsers = (users, senderUserID, receiverUserID, res) => {
+	if (users[senderUserID] === undefined) {
+		res.status(404).send({ errorStatus: 404, message: 'senderUserID not Found!' });
+		return true;
+	}
+
+	if (users[receiverUserID] === undefined) {
+		res.status(404).send({ errorStatus: 404, message: 'receiverUserID not Found!' });
+		return true;
+	}
+
+	return false;
+};
+
+const validateAccounts = (accounts, senderUserID, receiverUserID, senderUserAccountNumber, receiverUserAccountNumber, res) => {
+	if (accounts[senderUserID][senderUserAccountNumber] === undefined) {
+		res.status(404).send({ errorStatus: 404, message: 'senderUserAccountNumber not Found!' });
+		return true;
+	}
+
+
+	if (accounts[receiverUserID][receiverUserAccountNumber] === undefined) {
+		res.status(404).send({ errorStatus: 404, message: 'receiverUserAccountNumber not Found!' });
+		return true;
+	}
+
+	return false;
+};
+
+//* -------------------------------------------get functions------------------------------------------------------
 export const getSingleTransfer = (req, res) => {
 	const { transferID } = req.params;
 	const transfers = loadTransfersFromDB();
@@ -20,54 +70,7 @@ export const getAllTransfers = (req, res) => {
 	res.status(200).send(transfers);
 };
 
-const validateAmountToTransfer = (amountToTransfer, res) => {
-	if (amountToTransfer === undefined) {
-		res.status(404).send({ error: 404, message: 'you have to provide the amountToTransfer!' });
-		return true;
-	}
-
-	if (amountToTransfer <= 0) {
-		res.status(404).send({ error: 404, message: 'amountToTransfer must be a positive number! greater than zero' });
-		return true;
-	}
-
-	if (amountToTransfer < 100) {
-		res.status(404).send({ error: 404, message: 'minimum amount to transfer should be 100!' });
-		return true;
-	}
-
-	return false;
-};
-
-const validateUsers = (users, senderUserID, receiverUserID, res) => {
-	if (users[senderUserID] === undefined) {
-		res.status(404).send({ error: 404, message: 'senderUserID not Found!' });
-		return true;
-	}
-
-	if (users[receiverUserID] === undefined) {
-		res.status(404).send({ error: 404, message: 'receiverUserID not Found!' });
-		return true;
-	}
-
-	return false;
-};
-
-const validateAccounts = (accounts, senderUserID, receiverUserID, senderUserAccountNumber, receiverUserAccountNumber, res) => {
-	if (accounts[senderUserID][senderUserAccountNumber] === undefined) {
-		res.status(404).send({ error: 404, message: 'senderUserAccountNumber not Found!' });
-		return true;
-	}
-
-
-	if (accounts[receiverUserID][receiverUserAccountNumber] === undefined) {
-		res.status(404).send({ error: 404, message: 'receiverUserAccountNumber not Found!' });
-		return true;
-	}
-
-	return false;
-};
-
+//* -------------------------------------------transfer money function------------------------------------------------------
 export const transferMoney = (req, res) => {
 	const reqBody = checkReqBody(req.body);
 	if (reqBody.status === 'bad request') {
@@ -127,6 +130,6 @@ export const transferMoney = (req, res) => {
 		res.status(201).send(transfers[transferID]);
 	}
 	else {
-		res.status(404).send({ error: 404, message: `sender user doesn't have enough balance!` })
+		res.status(404).send({ errorStatus: 404, message: `sender user doesn't have enough balance!` })
 	}
 };
