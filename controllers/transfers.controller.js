@@ -112,11 +112,13 @@ export const transferMoney = (req, res) => {
 		users[senderUserID].transfersSent.push({
 			transferID,
 			sentFromAccountNumber: senderUserAccountNumber,
+			amountSent: amountToTransfer
 		});
 
 		users[receiverUserID].transfersReceived.push({
 			transferID,
 			receivedToAccountNumber: receiverUserAccountNumber,
+			amountReceived: amountToTransfer
 		});
 
 		saveAccountsToDB(accounts);

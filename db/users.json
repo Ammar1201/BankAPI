@@ -9,15 +9,18 @@
     "transfersSent": [
       {
         "transferID": "g2pcb21olbgxkhpk",
-        "sentFromAccountNumber": "3056373"
+        "sentFromAccountNumber": 3056373,
+        "amountSent": 1000
       },
       {
         "transferID": "g2pcbe0olbgxlnqq",
-        "sentFromAccountNumber": "3056373"
+        "sentFromAccountNumber": 3056373,
+        "amountSent": 3000
       },
       {
         "transferID": "g2pcb6lwlbgy7ufm",
-        "sentFromAccountNumber": "3056373"
+        "sentFromAccountNumber": 3056373,
+        "amountSent": 1000
       }
     ],
     "transfersReceived": []
@@ -33,15 +36,18 @@
     "transfersReceived": [
       {
         "transferID": "g2pcb21olbgxkhpk",
-        "receivedToAccountNumber": "281903"
+        "receivedToAccountNumber": 281903,
+        "amountReceived": 1000
       },
       {
         "transferID": "g2pcbe0olbgxlnqq",
-        "receivedToAccountNumber": "281903"
+        "receivedToAccountNumber": 281903,
+        "amountReceived": 3000
       },
       {
         "transferID": "g2pcb6lwlbgy7ufm",
-        "receivedToAccountNumber": "281903"
+        "receivedToAccountNumber": 281903,
+        "amountReceived": 1000
       }
     ]
   },
@@ -72,7 +78,8 @@
     "transfersSent": [
       {
         "transferID": "g2pcbc9glbi11hec",
-        "sentFromAccountNumber": 595600
+        "sentFromAccountNumber": 595600,
+        "amountSent": 1000
       }
     ],
     "transfersReceived": []
@@ -87,7 +94,8 @@
     "transfersReceived": [
       {
         "transferID": "g2pcbc9glbi11hec",
-        "receivedToAccountNumber": 279637
+        "receivedToAccountNumber": 279637,
+        "amountReceived": 1000
       }
     ]
   }
