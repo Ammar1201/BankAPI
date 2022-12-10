@@ -80,6 +80,11 @@
         "transferID": "g2pcbc9glbi11hec",
         "sentFromAccountNumber": 595600,
         "amountSent": 1000
+      },
+      {
+        "transferID": "g2pcbcowlbi1p6c8",
+        "sentFromAccountNumber": 595600,
+        "amountSent": 1000
       }
     ],
     "transfersReceived": []
@@ -94,6 +99,11 @@
     "transfersReceived": [
       {
         "transferID": "g2pcbc9glbi11hec",
+        "receivedToAccountNumber": 279637,
+        "amountReceived": 1000
+      },
+      {
+        "transferID": "g2pcbcowlbi1p6c8",
         "receivedToAccountNumber": 279637,
         "amountReceived": 1000
       }

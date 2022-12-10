@@ -98,38 +98,38 @@ export const transferMoney = (req, res) => {
 	}
 
 
-	if (checkSenderUserAccountBalance(accounts[senderUserID][senderUserAccountNumber], amountToTransfer)) {
-		accounts[receiverUserID][receiverUserAccountNumber].cash += amountToTransfer;
-
-		const transferID = uniqid();
-		transfers[transferID] = {
-			transferID,
-			senderUserID,
-			senderUserAccountNumber,
-			receiverUserID,
-			receiverUserAccountNumber,
-			transferredAmount: amountToTransfer,
-			transferTime: new Date().toUTCString()
-		}
-
-		users[senderUserID].transfersSent.push({
-			transferID,
-			sentFromAccountNumber: senderUserAccountNumber,
-			amountSent: amountToTransfer
-		});
-
-		users[receiverUserID].transfersReceived.push({
-			transferID,
-			receivedToAccountNumber: receiverUserAccountNumber,
-			amountReceived: amountToTransfer
-		});
-
-		saveAccountsToDB(accounts);
-		saveUsersToDB(users);
-		saveTransfersToDB(transfers);
-		res.status(201).send(transfers[transferID]);
+	if (!checkSenderUserAccountBalance(accounts[senderUserID][senderUserAccountNumber], amountToTransfer)) {
+		res.status(404).send({ errorStatus: 404, message: `sender user doesn't have enough balance!` });
+		return;
 	}
-	else {
-		res.status(404).send({ errorStatus: 404, message: `sender user doesn't have enough balance!` })
+
+	accounts[receiverUserID][receiverUserAccountNumber].cash += amountToTransfer;
+
+	const transferID = uniqid();
+	transfers[transferID] = {
+		transferID,
+		senderUserID,
+		senderUserAccountNumber,
+		receiverUserID,
+		receiverUserAccountNumber,
+		transferredAmount: amountToTransfer,
+		transferTime: new Date().toUTCString()
 	}
+
+	users[senderUserID].transfersSent.push({
+		transferID,
+		sentFromAccountNumber: senderUserAccountNumber,
+		amountSent: amountToTransfer
+	});
+
+	users[receiverUserID].transfersReceived.push({
+		transferID,
+		receivedToAccountNumber: receiverUserAccountNumber,
+		amountReceived: amountToTransfer
+	});
+
+	saveAccountsToDB(accounts);
+	saveUsersToDB(users);
+	saveTransfersToDB(transfers);
+	res.status(201).send(transfers[transferID]);
 };
