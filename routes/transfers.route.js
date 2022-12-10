@@ -3,7 +3,7 @@ import { transferMoney, getAllTransfers, getSingleTransfer } from "../controller
 
 export const transfersRouter = Router();
 
-transfersRouter.post('/newTransfer', transferMoney); //* /api/transfers
+transfersRouter.post('/newTransfer', transferMoney);
 
 transfersRouter.get('', getAllTransfers);
 transfersRouter.get('/:transferID', getSingleTransfer);
